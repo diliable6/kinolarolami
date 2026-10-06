@@ -1,1 +1,1354 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KinoUz</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    background:#08090d;
+    color:white;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+/* HEADER */
+
+header{
+    position:sticky;
+    top:0;
+    z-index:100;
+
+    display:flex;
+    align-items:center;
+    gap:30px;
+
+    padding:16px 5%;
+
+    background:#111217;
+    border-bottom:1px solid #292a30;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:bold;
+    color:#e50914;
+}
+
+nav{
+    display:flex;
+    gap:20px;
+}
+
+nav a{
+    color:#ddd;
+    text-decoration:none;
+}
+
+nav a:hover{
+    color:#e50914;
+}
+
+.search{
+    margin-left:auto;
+
+    width:300px;
+
+    padding:12px 18px;
+
+    border:1px solid #333;
+    border-radius:25px;
+
+    background:#1c1d23;
+    color:white;
+
+    outline:none;
+}
+
+/* HERO */
+
+.hero{
+    min-height:430px;
+
+    display:flex;
+    align-items:center;
+
+    padding:60px 7%;
+
+    background:
+    linear-gradient(
+        90deg,
+        #08090d 10%,
+        rgba(8,9,13,.7),
+        rgba(8,9,13,.1)
+    ),
+    url("https://image.tmdb.org/t/p/w1280/8YFL5QQVPy3AgrEQxNYVSgiPEbe.jpg")
+    center/cover;
+}
+
+.hero h1{
+    font-size:55px;
+    margin-bottom:15px;
+}
+
+.hero p{
+    max-width:600px;
+
+    color:#ccc;
+
+    line-height:1.7;
+
+    margin-bottom:25px;
+}
+
+.button{
+    padding:13px 25px;
+
+    border:0;
+    border-radius:7px;
+
+    background:#e50914;
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+.button:hover{
+    background:#b20710;
+}
+
+/* GENRES */
+
+.genres{
+    display:flex;
+    gap:10px;
+
+    padding:25px 5%;
+
+    overflow-x:auto;
+}
+
+.genre{
+    padding:10px 18px;
+
+    border-radius:25px;
+
+    background:#191a20;
+
+    white-space:nowrap;
+
+    cursor:pointer;
+}
+
+.genre:hover,
+.genre.active{
+    background:#e50914;
+}
+
+/* CONTENT */
+
+.container{
+    width:90%;
+    max-width:1500px;
+
+    margin:auto;
+}
+
+.title{
+    font-size:28px;
+
+    margin:25px 0 20px;
+}
+
+/* MOVIES */
+
+.movies{
+    display:grid;
+
+    grid-template-columns:
+    repeat(6,1fr);
+
+    gap:18px;
+}
+
+.movie{
+    overflow:hidden;
+
+    background:#15161c;
+
+    border-radius:9px;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.movie:hover{
+    transform:translateY(-7px);
+
+    box-shadow:
+    0 15px 35px rgba(0,0,0,.65);
+}
+
+.movie img{
+    width:100%;
+    height:285px;
+
+    display:block;
+
+    object-fit:cover;
+
+    background:#191a20;
+}
+
+.movie-info{
+    padding:12px;
+}
+
+.movie-title{
+    min-height:40px;
+
+    font-size:15px;
+
+    line-height:1.35;
+}
+
+.movie-year{
+    margin-top:7px;
+
+    color:#888;
+
+    font-size:13px;
+}
+
+.rating{
+    float:right;
+
+    color:#ffc107;
+}
+
+/* LOAD */
+
+.load-more{
+    display:block;
+
+    margin:40px auto;
+
+    padding:13px 28px;
+
+    border:0;
+    border-radius:7px;
+
+    background:#e50914;
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+.load-more:hover{
+    background:#b20710;
+}
+
+/* MESSAGE */
+
+.message{
+    display:none;
+
+    padding:60px;
+
+    text-align:center;
+
+    color:#888;
+}
+
+/* MODAL */
+
+.modal{
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:999;
+
+    overflow:auto;
+
+    padding:30px 15px;
+
+    background:rgba(0,0,0,.93);
+}
+
+.modal-box{
+    position:relative;
+
+    max-width:850px;
+
+    margin:auto;
+
+    padding:30px;
+
+    background:#17181e;
+
+    border-radius:12px;
+}
+
+.close{
+    position:absolute;
+
+    right:15px;
+    top:15px;
+
+    width:40px;
+    height:40px;
+
+    border:0;
+
+    border-radius:50%;
+
+    background:#e50914;
+
+    color:white;
+
+    font-size:24px;
+
+    cursor:pointer;
+}
+
+.modal-poster{
+    width:230px;
+    max-width:100%;
+
+    border-radius:8px;
+
+    margin-bottom:20px;
+}
+
+.modal-title{
+    font-size:32px;
+
+    margin-bottom:12px;
+}
+
+.modal-text{
+    color:#bbb;
+
+    line-height:1.7;
+
+    margin:12px 0;
+}
+
+.trailer{
+    margin-top:25px;
+}
+
+.trailer iframe{
+    width:100%;
+    height:430px;
+
+    border:0;
+
+    border-radius:8px;
+}
+
+/* FOOTER */
+
+footer{
+    margin-top:60px;
+
+    padding:30px;
+
+    text-align:center;
+
+    color:#777;
+
+    background:#111217;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1200px){
+
+    .movies{
+        grid-template-columns:repeat(5,1fr);
+    }
+
+}
+
+@media(max-width:950px){
+
+    .movies{
+        grid-template-columns:repeat(4,1fr);
+    }
+
+}
+
+@media(max-width:700px){
+
+    header{
+        flex-wrap:wrap;
+    }
+
+    nav{
+        display:none;
+    }
+
+    .search{
+        width:100%;
+
+        margin-left:0;
+    }
+
+    .hero h1{
+        font-size:40px;
+    }
+
+    .movies{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .movie img{
+        height:230px;
+    }
+
+}
+
+@media(max-width:500px){
+
+    .movies{
+        grid-template-columns:repeat(2,1fr);
+
+        gap:12px;
+    }
+
+    .movie img{
+        height:220px;
+    }
+
+    .hero{
+        min-height:350px;
+    }
+
+}
+</style>
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        🎬 KinoUz
+    </div>
+
+    <nav>
+        <a href="#">Bosh sahifa</a>
+        <a href="#movies-section">Filmlar</a>
+        <a href="#genres">Janrlar</a>
+    </nav>
+
+    <input
+        id="search"
+        class="search"
+        type="text"
+        placeholder="🔍 Kino qidirish..."
+    >
+
+</header>
+
+
+<section class="hero">
+
+    <div>
+
+        <h1>
+            Kinolar olami
+        </h1>
+
+        <p>
+            Eng mashhur filmlar, turli janrlar,
+            reytinglar va trailerlar.
+        </p>
+
+        <button
+            class="button"
+            onclick="scrollMovies()"
+        >
+            🎬 Filmlarni ko‘rish
+        </button>
+
+    </div>
+
+</section>
+
+
+<section
+    class="genres"
+    id="genres"
+>
+
+    <button
+        class="genre active"
+        data-genre="all"
+    >
+        Barchasi
+    </button>
+
+    <button
+        class="genre"
+        data-genre="Action"
+    >
+        🔥 Action
+    </button>
+
+    <button
+        class="genre"
+        data-genre="Comedy"
+    >
+        😂 Komediya
+    </button>
+
+    <button
+        class="genre"
+        data-genre="Horror"
+    >
+        👻 Horror
+    </button>
+
+    <button
+        class="genre"
+        data-genre="Sci-Fi"
+    >
+        🚀 Fantastika
+    </button>
+
+    <button
+        class="genre"
+        data-genre="Drama"
+    >
+        🎭 Drama
+    </button>
+
+    <button
+        class="genre"
+        data-genre="Romance"
+    >
+        ❤️ Romantika
+    </button>
+
+    <button
+        class="genre"
+        data-genre="Adventure"
+    >
+        🗺️ Sarguzasht
+    </button>
+
+    <button
+        class="genre"
+        data-genre="Animation"
+    >
+        🧸 Multfilm
+    </button>
+
+</section>
+
+
+<main
+    class="container"
+    id="movies-section"
+>
+
+    <h2 class="title">
+        🔥 Mashhur filmlar
+    </h2>
+
+    <div
+        class="movies"
+        id="movies"
+    ></div>
+
+    <div
+        class="message"
+        id="message"
+    >
+        😔 Film topilmadi
+    </div>
+
+    <button
+        class="load-more"
+        id="loadMore"
+    >
+        ➕ Ko‘proq filmlar
+    </button>
+
+</main>
+
+
+<!-- MODAL -->
+
+<div
+    class="modal"
+    id="modal"
+>
+
+    <div class="modal-box">
+
+        <button
+            class="close"
+            onclick="closeModal()"
+        >
+            ×
+        </button>
+
+        <div id="modalContent"></div>
+
+    </div>
+
+</div>
+
+
+<footer>
+    © 2026 KinoUz
+</footer>
+
+
+<script>
+
+/*
+====================================================
+FILMLAR
+====================================================
+*/
+
+const movies = [
+
+{
+    title:"Interstellar",
+    year:"2014",
+    genre:"Sci-Fi",
+    rating:"8.7",
+    poster:"https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+    text:"Insoniyat kelajagini saqlab qolish uchun kosmonavtlar koinotga xavfli sayohatga chiqadi.",
+    trailer:"zSWdZVtXT7E"
+},
+
+{
+    title:"Inception",
+    year:"2010",
+    genre:"Sci-Fi",
+    rating:"8.8",
+    poster:"https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg",
+    text:"Odamlarning tushlariga kirish imkoniga ega bo‘lgan jamoa juda xavfli topshiriqni bajaradi.",
+    trailer:"YoHD9XEInc0"
+},
+
+{
+    title:"The Dark Knight",
+    year:"2008",
+    genre:"Action",
+    rating:"9.0",
+    poster:"https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+    text:"Batman Gotham shahrini Jokerning xavfli rejalaridan himoya qiladi.",
+    trailer:"EXeTwQWrcwY"
+},
+
+{
+    title:"Avatar",
+    year:"2009",
+    genre:"Sci-Fi",
+    rating:"7.8",
+    poster:"https://image.tmdb.org/t/p/w500/kyeqWdyUXW608qlYkRqosgbbJyK.jpg",
+    text:"Pandora sayyorasidagi go‘zal va xavfli dunyo haqidagi fantastik sarguzasht.",
+    trailer:"5PSNL1qE6VY"
+},
+
+{
+    title:"Joker",
+    year:"2019",
+    genre:"Drama",
+    rating:"8.4",
+    poster:"https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
+    text:"Arthur Fleckning hayoti va Gotham shahridagi og‘ir kunlari haqida drama.",
+    trailer:"zAGVQLHvwOY"
+},
+
+{
+    title:"Avengers: Endgame",
+    year:"2019",
+    genre:"Action",
+    rating:"8.4",
+    poster:"https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg",
+    text:"Qasoskorlar Thanosga qarshi so‘nggi jangga tayyorlanadi.",
+    trailer:"TcMBFSGVi1c"
+},
+
+{
+    title:"Spider-Man: No Way Home",
+    year:"2021",
+    genre:"Action",
+    rating:"8.2",
+    poster:"https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
+    text:"Peter Parker multiverse eshiklarini ochib yuboradi.",
+    trailer:"JfVOs4VSpmA"
+},
+
+{
+    title:"Iron Man",
+    year:"2008",
+    genre:"Action",
+    rating:"7.9",
+    poster:"https://image.tmdb.org/t/p/w500/78lPtwv72eTNqFW9COBYI0dWDJa.jpg",
+    text:"Tony Stark yangi texnologik zirh yaratib, Iron Man ga aylanadi.",
+    trailer:"8ugaeA-nMTc"
+},
+
+{
+    title:"Doctor Strange",
+    year:"2016",
+    genre:"Sci-Fi",
+    rating:"7.5",
+    poster:"https://image.tmdb.org/t/p/w500/uGBVj3bEbCoZbDjjl9wTxcygko1.jpg",
+    text:"Jarohatdan so‘ng Stephen Strange sehrli dunyoni o‘rganishni boshlaydi.",
+    trailer:"HSzx-zryEgM"
+},
+
+{
+    title:"Black Panther",
+    year:"2018",
+    genre:"Action",
+    rating:"7.3",
+    poster:"https://image.tmdb.org/t/p/w500/uxzzxijgPIY7slzFvMotPv8wjKA.jpg",
+    text:"Wakanda qiroli o‘z mamlakatini xavfdan himoya qiladi.",
+    trailer:"xjDjIWPwcPU"
+},
+
+{
+    title:"Thor: Ragnarok",
+    year:"2017",
+    genre:"Action",
+    rating:"7.9",
+    poster:"https://image.tmdb.org/t/p/w500/rzRwTcFvttcN1ZpX2xv4j3tSdJu.jpg",
+    text:"Thor Asgardni Ragnarokdan qutqarishga urinadi.",
+    trailer:"ue80QwXMRHg"
+},
+
+{
+    title:"Guardians of the Galaxy",
+    year:"2014",
+    genre:"Sci-Fi",
+    rating:"8.0",
+    poster:"https://image.tmdb.org/t/p/w500/r7vmZjiyZw9rpJMQJdXpjgiCOk9.jpg",
+    text:"G‘alati qahramonlar jamoasi galaktikani qutqarishga majbur bo‘ladi.",
+    trailer:"d96cjJhvlMA"
+},
+
+{
+    title:"Deadpool",
+    year:"2016",
+    genre:"Comedy",
+    rating:"8.0",
+    poster:"https://image.tmdb.org/t/p/w500/fSRb7vyIP8rQpL0I47P3qUsEKX3.jpg",
+    text:"Hazilkash va noodatiy superqahramon haqidagi film.",
+    trailer:"Xithigfg7dA"
+},
+
+{
+    title:"The Matrix",
+    year:"1999",
+    genre:"Sci-Fi",
+    rating:"8.7",
+    poster:"https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg",
+    text:"Neo haqiqiy dunyo haqidagi dahshatli haqiqatni bilib oladi.",
+    trailer:"vKQi3bBA1y8"
+},
+
+{
+    title:"The Lord of the Rings",
+    year:"2001",
+    genre:"Adventure",
+    rating:"8.8",
+    poster:"https://image.tmdb.org/t/p/w500/6oom5QYQ2yQTMJIbnvbkblqC3wJ.jpg",
+    text:"Uzukni yo‘q qilish uchun boshlangan ulkan sayohat.",
+    trailer:"V75dMMIW2B4"
+},
+
+{
+    title:"Harry Potter",
+    year:"2001",
+    genre:"Adventure",
+    rating:"7.6",
+    poster:"https://image.tmdb.org/t/p/w500/wuMc08IPKEatf9rnMNXvIDxqP4W.jpg",
+    text:"Garri Potter sehrgarlar maktabidagi ilk yilini boshlaydi.",
+    trailer:"VyHV0BRtdxo"
+},
+
+{
+    title:"Jurassic Park",
+    year:"1993",
+    genre:"Adventure",
+    rating:"8.2",
+    poster:"https://image.tmdb.org/t/p/w500/fjTU1Bgh3KJu4O3G9fN7vK5J8mJ.jpg",
+    text:"Dinozavrlar tiriltirilgan sirli parkdagi sarguzasht.",
+    trailer:"lc0UehYemQA"
+},
+
+{
+    title:"Pirates of the Caribbean",
+    year:"2003",
+    genre:"Adventure",
+    rating:"8.1",
+    poster:"https://image.tmdb.org/t/p/w500/poHwW2G5vLQzD4X8tR5yT7H0m5N.jpg",
+    text:"Jack Sparrow va dengizdagi katta sarguzasht.",
+    trailer:"naQr0uTrH_s"
+},
+
+{
+    title:"Titanic",
+    year:"1997",
+    genre:"Romance",
+    rating:"7.9",
+    poster:"https://image.tmdb.org/t/p/w500/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg",
+    text:"Titanic kemasidagi mashhur sevgi hikoyasi.",
+    trailer:"kVrqfYjkTdQ"
+},
+
+{
+    title:"Forrest Gump",
+    year:"1994",
+    genre:"Drama",
+    rating:"8.8",
+    poster:"https://image.tmdb.org/t/p/w500/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg",
+    text:"Forrest Gumpning ajoyib va ta’sirli hayot yo‘li.",
+    trailer:"bLvqoHBptjg"
+},
+
+{
+    title:"The Conjuring",
+    year:"2013",
+    genre:"Horror",
+    rating:"7.5",
+    poster:"https://image.tmdb.org/t/p/w500/wVYREutTvI2tmxr6ujrHT704wGF.jpg",
+    text:"Paranormal hodisalar sodir bo‘layotgan uy haqidagi dahshatli film.",
+    trailer:"k10ETZ41q5o"
+},
+
+{
+    title:"It",
+    year:"2017",
+    genre:"Horror",
+    rating:"7.3",
+    poster:"https://image.tmdb.org/t/p/w500/9E2y5Q7WlCVNEhP5gI3rXfK6K4x.jpg",
+    text:"Bolalar guruhini Pennywise ismli dahshatli mavjudot ta’qib qiladi.",
+    trailer:"xKJmEC5ieOk"
+},
+
+{
+    title:"A Quiet Place",
+    year:"2018",
+    genre:"Horror",
+    rating:"7.5",
+    poster:"https://image.tmdb.org/t/p/w500/nAU74GmpUk7t5iklEp3bufwDq4N.jpg",
+    text:"Ovoz chiqarmasdan yashashga majbur bo‘lgan oila.",
+    trailer:"WR7cc5t7tv8"
+},
+
+{
+    title:"The Hangover",
+    year:"2009",
+    genre:"Comedy",
+    rating:"7.7",
+    poster:"https://image.tmdb.org/t/p/w500/A0T2lYl1pX0s9H0e2Y9Y9Y9Y9Y.jpg",
+    text:"Las-Vegasdagi unutilmas kechadan keyingi kulgili voqealar.",
+    trailer:"tlize92ffnY"
+},
+
+{
+    title:"Home Alone",
+    year:"1990",
+    genre:"Comedy",
+    rating:"7.7",
+    poster:"https://image.tmdb.org/t/p/w500/9wSbe4CwObACCQvaUVhWQyLR5Vz.jpg",
+    text:"Kevin uyda yolg‘iz qoladi va o‘g‘rilarga qarshi kurashadi.",
+    trailer:"jEDaVHmw7r4"
+},
+
+{
+    title:"Toy Story",
+    year:"1995",
+    genre:"Animation",
+    rating:"8.3",
+    poster:"https://image.tmdb.org/t/p/w500/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg",
+    text:"O‘yinchoqlar yashirincha jonlanadigan ajoyib dunyo.",
+    trailer:"v-PjgYDrg70"
+},
+
+{
+    title:"Finding Nemo",
+    year:"2003",
+    genre:"Animation",
+    rating:"8.2",
+    poster:"https://image.tmdb.org/t/p/w500/eHuGQ10FUzK1mdOY69wF5pGgEf5.jpg",
+    text:"Nemo yo‘qolib qoladi va otasi uni izlashga chiqadi.",
+    trailer:"wZdpNglLbt8"
+},
+
+{
+    title:"Ratatouille",
+    year:"2007",
+    genre:"Animation",
+    rating:"8.1",
+    poster:"https://image.tmdb.org/t/p/w500/t3vaWRPSf6WjDSamIkKDs1iQWna.jpg",
+    text:"Taom pishirishni orzu qilgan kichkina kalamush.",
+    trailer:"NgsQ8mVkN8w"
+},
+
+{
+    title:"Cars",
+    year:"2006",
+    genre:"Animation",
+    rating:"7.2",
+    poster:"https://image.tmdb.org/t/p/w500/abW5AzHDaIK1n9C36VdM0x1hR2A.jpg",
+    text:"Lightning McQueen poyga va do‘stlik haqida saboq oladi.",
+    trailer:"SbXIj2T-_uk"
+},
+
+{
+    title:"Dune",
+    year:"2021",
+    genre:"Sci-Fi",
+    rating:"8.0",
+    poster:"https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
+    text:"Arrakis sayyorasidagi ulkan fantastik sarguzasht.",
+    trailer:"n9xhJrPXop4"
+},
+
+{
+    title:"John Wick",
+    year:"2014",
+    genre:"Action",
+    rating:"7.4",
+    poster:"https://image.tmdb.org/t/p/w500/fZPSd91yGE9fCcCe6OoQr6E3Bev.jpg",
+    text:"John Wick tinch hayotini buzganlardan qasos olishga chiqadi.",
+    trailer:"C0BMx-qxsP4"
+},
+
+{
+    title:"Mission Impossible",
+    year:"1996",
+    genre:"Action",
+    rating:"7.1",
+    poster:"https://image.tmdb.org/t/p/w500/l2B7jE4s2P7QZ4Zq8sY5mY4s2M4.jpg",
+    text:"Ethan Huntning xavfli maxfiy missiyasi.",
+    trailer:"avz06PDqDbM"
+},
+
+{
+    title:"La La Land",
+    year:"2016",
+    genre:"Romance",
+    rating:"8.0",
+    poster:"https://image.tmdb.org/t/p/w500/uDO8zWDhfWwoFdKS4fzkUJt0Rf0.jpg",
+    text:"Musiqa, orzular va sevgi haqidagi romantik film.",
+    trailer:"0pdqf4P9MB8"
+},
+
+{
+    title:"The Mummy",
+    year:"1999",
+    genre:"Adventure",
+    rating:"7.0",
+    poster:"https://image.tmdb.org/t/p/w500/yhIsVvcUm7QxzLfT6HW2wLf5ajY.jpg",
+    text:"Qadimgi Misrdagi sirli sarguzasht.",
+    trailer:"f7oVZB1pFZ8"
+},
+
+{
+    title:"Terminator 2",
+    year:"1991",
+    genre:"Action",
+    rating:"8.6",
+    poster:"https://image.tmdb.org/t/p/w500/5M0j0B18abtBI5sK9s6L3x5M0N7.jpg",
+    text:"Kelajakdan kelgan mashina insoniyat kelajagini himoya qiladi.",
+    trailer:"CRRlbC0-7R8"
+}
+
+];
+
+
+/*
+====================================================
+FILMLARNI CHIQARISH
+====================================================
+*/
+
+const moviesBox =
+document.getElementById("movies");
+
+
+function renderMovies(list){
+
+    moviesBox.innerHTML = "";
+
+
+    const message =
+    document.getElementById("message");
+
+
+    if(list.length === 0){
+
+        message.style.display = "block";
+
+        document
+        .getElementById("loadMore")
+        .style.display = "none";
+
+        return;
+
+    }
+
+
+    message.style.display = "none";
+
+
+    list.forEach(movie => {
+
+        const card =
+        document.createElement("article");
+
+
+        card.className = "movie";
+
+
+        card.innerHTML = `
+
+            <img
+                src="${movie.poster}"
+                alt="${movie.title}"
+                loading="lazy"
+            >
+
+            <div class="movie-info">
+
+                <div class="movie-title">
+
+                    ${movie.title}
+
+                    <span class="rating">
+                        ⭐ ${movie.rating}
+                    </span>
+
+                </div>
+
+                <div class="movie-year">
+                    ${movie.year} • ${movie.genre}
+                </div>
+
+            </div>
+
+        `;
+
+
+        card.onclick = function(){
+
+            openMovie(movie);
+
+        };
+
+
+        moviesBox.appendChild(card);
+
+    });
+
+
+    document
+    .getElementById("loadMore")
+    .style.display = "block";
+
+}
+
+
+renderMovies(movies);
+
+
+/*
+====================================================
+QIDIRUV
+====================================================
+*/
+
+document
+.getElementById("search")
+.addEventListener(
+    "input",
+    function(){
+
+        const value =
+        this.value
+        .toLowerCase()
+        .trim();
+
+
+        const result =
+        movies.filter(movie =>
+
+            movie.title
+            .toLowerCase()
+            .includes(value)
+
+            ||
+
+            movie.genre
+            .toLowerCase()
+            .includes(value)
+
+            ||
+
+            movie.year
+            .includes(value)
+
+        );
+
+
+        renderMovies(result);
+
+    }
+);
+
+
+/*
+====================================================
+JANRLAR
+====================================================
+*/
+
+document
+.querySelectorAll(".genre")
+.forEach(button => {
+
+    button.addEventListener(
+        "click",
+        function(){
+
+            document
+            .querySelectorAll(".genre")
+            .forEach(
+                item =>
+                item.classList.remove("active")
+            );
+
+
+            this.classList.add("active");
+
+
+            document
+            .getElementById("search")
+            .value = "";
+
+
+            const selected =
+            this.dataset.genre;
+
+
+            if(selected === "all"){
+
+                renderMovies(movies);
+
+            }
+
+            else{
+
+                renderMovies(
+                    movies.filter(
+                        movie =>
+                        movie.genre === selected
+                    )
+                );
+
+            }
+
+        }
+    );
+
+});
+
+
+/*
+====================================================
+FILM OYNASI
+====================================================
+*/
+
+function openMovie(movie){
+
+    const modal =
+    document.getElementById("modal");
+
+
+    const content =
+    document.getElementById("modalContent");
+
+
+    content.innerHTML = `
+
+        <img
+            class="modal-poster"
+            src="${movie.poster}"
+            alt="${movie.title}"
+        >
+
+        <h2 class="modal-title">
+            ${movie.title}
+        </h2>
+
+        <p class="modal-text">
+
+            ⭐ ${movie.rating}
+
+            &nbsp; • &nbsp;
+
+            ${movie.year}
+
+            &nbsp; • &nbsp;
+
+            ${movie.genre}
+
+        </p>
+
+        <p class="modal-text">
+            ${movie.text}
+        </p>
+
+        <button
+            class="button"
+            onclick="
+                showTrailer('${movie.trailer}')
+            "
+        >
+            ▶ Trailer ko‘rish
+        </button>
+
+        <div
+            id="trailer"
+            class="trailer"
+        ></div>
+
+    `;
+
+
+    modal.style.display = "block";
+
+}
+
+
+/*
+====================================================
+TRAILER
+====================================================
+*/
+
+function showTrailer(id){
+
+    const trailer =
+    document.getElementById("trailer");
+
+
+    trailer.innerHTML = `
+
+        <iframe
+            src="https://www.youtube.com/embed/${id}"
+            title="Film trailer"
+            allowfullscreen
+        ></iframe>
+
+    `;
+
+}
+
+
+/*
+====================================================
+MODALNI YOPISH
+====================================================
+*/
+
+function closeModal(){
+
+    document
+    .getElementById("modal")
+    .style.display = "none";
+
+}
+
+
+window.addEventListener(
+    "click",
+    function(event){
+
+        const modal =
+        document.getElementById("modal");
+
+
+        if(event.target === modal){
+
+            closeModal();
+
+        }
+
+    }
+);
+
+
+/*
+====================================================
+SCROLL
+====================================================
+*/
+
+function scrollMovies(){
+
+    document
+    .getElementById("movies-section")
+    .scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+
+
+/*
+====================================================
+KO'PROQ
+====================================================
+*/
+
+document
+.getElementById("loadMore")
+.addEventListener(
+    "click",
+    function(){
+
+        alert(
+            "Keyingi versiyada bu tugma orqali yana 100+ ta film qo‘shish mumkin."
+        );
+
+    }
+);
+
+</script>
+
+</body>
+</html>
 
